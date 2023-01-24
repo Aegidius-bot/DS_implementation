@@ -8,6 +8,18 @@ struct node_t{
     node_t* rightSibling;
     node_t* leftSibling;
 };
+
+//Tree traversal
+void inOrder(node_t* tree){
+    if(tree){
+        inOrder(tree->leftSibling);
+        printf("%d, ",tree->key);
+        inOrder(tree->rightSibling);
+        return;
+    }
+    printf("The tree is empty\n");
+    return;
+}
 //Recursive search
 node_t* search(node_t* tree ,int key){
     if(!tree)
@@ -29,8 +41,12 @@ node_t* iterSearch(node_t* tree, int key){
 
 //if the tree is empty or key is present in the tree, return NULL.
 node_t* modifiedSearch(node_t* tree, int key){
-  while (tree)
-  {
+    if(!tree){
+        return NULL;
+    }
+    node_t* temp = malloc(sizeof(node_t));
+    while (tree){
+    temp = tree;
     if(tree->key == key){
         printf("\nin!\n");
         return NULL;
@@ -43,17 +59,20 @@ node_t* modifiedSearch(node_t* tree, int key){
     
   }
   
-  return tree;
+  return temp;
 }
 
-void insert(node_t tree, int key){
 
-}
 
 int main(){
     //Initialize a tree
     node_t* tree = malloc(sizeof(node_t));
-    tree->leftSibling = tree->rightSibling = NULL;
+    tree = NULL;
+    // tree = insert(tree, 13);
+    // tree = insert(tree, 78);
+    // tree = insert(tree, 7);
+    // tree = insert(tree, 5);
+    inOrder(tree);
     
     return 0;
 }
