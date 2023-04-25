@@ -13,20 +13,25 @@ struct node_t{
 void inOrder(node_t* tree){
     if(tree){
         inOrder(tree->leftSibling);
-        printf("%d, ",tree->key);
+        printf("%d ",tree->key);
         inOrder(tree->rightSibling);
         return;
     }
-    printf("The tree is empty\n");
     return;
 }
 //Recursive search
 node_t* search(node_t* tree ,int key){
-    if(!tree)
-    return NULL;
+    if(!tree){
+        printf("Empty\n");
+        return NULL;
+    }
+    
 
-    if(tree->key == key)
-    return tree;
+    if(tree->key == key){
+        printf("%d is in the tree\n",key);
+        return tree;
+    }
+    
 
     if(key < tree->key)
     return search(tree->leftSibling, key);
@@ -35,17 +40,13 @@ node_t* search(node_t* tree ,int key){
     return search(tree->rightSibling, key);
 }
 
-node_t* iterSearch(node_t* tree, int key){
-
-}
-
 //if the tree is empty or key is present in the tree, return NULL.
 node_t* modifiedSearch(node_t* tree, int key){
     if(!tree){
         return NULL;
     }
     node_t* temp = malloc(sizeof(node_t));
-    while (tree){
+    while (tree != NULL){
     temp = tree;
     if(tree->key == key){
         printf("\nin!\n");
@@ -56,10 +57,31 @@ node_t* modifiedSearch(node_t* tree, int key){
     }else{
         tree = tree->rightSibling;
     }
-    
   }
-  
   return temp;
+}
+
+node_t* insert(node_t* tree, int key){
+    node_t* temp= modifiedSearch(tree, key);
+    node_t* ptr;
+    if(!tree || temp){
+        ptr = malloc(sizeof(node_t));
+        ptr->key = key;
+        ptr->rightSibling = ptr->leftSibling = NULL;
+        if(tree){
+            if(ptr->key < temp->key){
+                ptr = temp->leftSibling;
+                return tree;
+            }else{
+                ptr = temp->rightSibling;
+                return tree;
+            }
+        }else{
+            tree = ptr;
+            return tree;
+        }
+    }
+    return tree;;
 }
 
 
@@ -68,11 +90,15 @@ int main(){
     //Initialize a tree
     node_t* tree = malloc(sizeof(node_t));
     tree = NULL;
-    // tree = insert(tree, 13);
-    // tree = insert(tree, 78);
-    // tree = insert(tree, 7);
-    // tree = insert(tree, 5);
-    inOrder(tree);
+    tree = insert(tree, 78);
+    insert(tree, 14);
+    search(tree, 78);
+
+    puts("");
+    printf("%x",modifiedSearch(tree, 82));
+    free(tree);
+
+    
     
     return 0;
 }
